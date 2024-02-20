@@ -1,6 +1,6 @@
 {
 	"name": "private-registry-mock",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Simple mocked server and package of an npm private registry.",
 	"keywords": [
 		"nodejs",
@@ -51,9 +51,9 @@
 	},
 	"dependencies": {
 		"basic-auth": "^2.0.1",
-		"polka-bearer-token": "^0.1.1",
 		"get-port": "^7.0.0",
 		"polka": "1.0.0-next.24",
+		"polka-bearer-token": "^0.1.1",
 		"uint8array-extras": "^1.1.0"
 	},
 	"devDependencies": {
