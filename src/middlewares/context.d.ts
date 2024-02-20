@@ -1,14 +1,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 import type * as http from "http"; // eslint-disable-line unicorn/prefer-node-protocol
-import type * as polka from "polka";
 import type { ServerOptions } from "../server.ts";
 import type { ResponseMethod } from "./response-helpers.js";
-
-declare module "polka" {
-	interface Request {
-		token?: string;
-	}
-}
 
 type Context = ServerOptions;
 

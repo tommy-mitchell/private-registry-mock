@@ -36,7 +36,6 @@
 	},
 	"scripts": {
 		"prepack": "npm run build",
-		"postinstall": "patch-package",
 		"build": "tsc -p tsconfig.build.json && tsup && dprint fmt",
 		"lint": "xo",
 		"format": "dprint fmt && xo --fix",
@@ -52,7 +51,7 @@
 	},
 	"dependencies": {
 		"basic-auth": "^2.0.1",
-		"express-bearer-token": "^2.4.0",
+		"polka-bearer-token": "^0.1.1",
 		"get-port": "^7.0.0",
 		"polka": "1.0.0-next.24",
 		"uint8array-extras": "^1.1.0"
@@ -67,8 +66,6 @@
 		"c8": "^9.1.0",
 		"ky": "^1.2.0",
 		"package-json": "^9.0.0",
-		"patch-package": "^8.0.0",
-		"postinstall-postinstall": "^2.1.0",
 		"tsd": "^0.30.5",
 		"tsimp": "^2.0.11",
 		"tsup": "^8.0.2",

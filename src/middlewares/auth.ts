@@ -1,6 +1,6 @@
 import type { Middleware } from "polka";
 import { base64ToString } from "uint8array-extras";
-import bearerToken from "express-bearer-token";
+import bearerToken from "polka-bearer-token";
 import basicAuth from "basic-auth";
 
 export const auth: Middleware = async (req, res, next) => {
