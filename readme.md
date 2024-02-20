@@ -38,6 +38,21 @@ console.log(response);
 server.close();
 ```
 
+Also exposes a health-check endpoint at `/` for testing connectivity:
+
+```ts
+import mockPrivateRegistry from "private-registry-mock";
+import ky from "ky";
+
+const server = await mockPrivateRegistry();
+const response = await ky.get("http://localhost:63142/").json();
+
+console.log(response);
+//=> { message: "Connected!" }
+
+server.close();
+```
+
 ## API
 
 ### mockPrivateRegistry(packageName)
