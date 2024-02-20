@@ -1,6 +1,6 @@
 {
 	"name": "private-registry-mock",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Simple mocked server and package of an npm private registry.",
 	"keywords": [
 		"nodejs",
