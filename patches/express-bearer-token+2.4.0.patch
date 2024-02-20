@@ -1,0 +1,51 @@
+diff --git a/node_modules/express-bearer-token/index.d.ts b/node_modules/express-bearer-token/index.d.ts
+index 3ddfa4e..0e8ea68 100644
+--- a/node_modules/express-bearer-token/index.d.ts
++++ b/node_modules/express-bearer-token/index.d.ts
+@@ -16,7 +16,7 @@
+ 
+  =============================================== */
+ 
+-import * as express from "express";
++import * as polka from "polka";
+ 
+ /**
+  * This module will attempt to extract a bearer token from a request from these locations:
+@@ -30,7 +30,7 @@ import * as express from "express";
+  *
+  * To change the variables used by this module, you can specify an object with new options.
+  */
+-declare function bearerToken(options?: bearerToken.BearerTokenOptions): express.Handler;
++declare function bearerToken(options?: bearerToken.BearerTokenOptions): polka.Middleware;
+ 
+ declare namespace bearerToken {
+     interface BearerTokenOptions {
+@@ -63,14 +63,7 @@ declare namespace bearerToken {
+             secret: string,
+         };
+     }
+-    function bearerToken(options?: BearerTokenOptions): express.Handler;
++    function bearerToken(options?: BearerTokenOptions): polka.Middleware;
+ }
+ 
+-declare global {
+-  namespace Express {
+-      export interface Request {
+-          token?: string
+-      }
+-  }
+-}
+ export = bearerToken;
+diff --git a/node_modules/express-bearer-token/index.js b/node_modules/express-bearer-token/index.js
+index 49f1810..66bd2a5 100644
+--- a/node_modules/express-bearer-token/index.js
++++ b/node_modules/express-bearer-token/index.js
+@@ -79,6 +79,8 @@ module.exports = opts => {
+       // in more than one place in a single request.
+       if (error) {
+         res.status(400).send();
++        res.statusCode = 400;
++        res.end();
+       } else {
+         req[reqKey] = token;
+         next();

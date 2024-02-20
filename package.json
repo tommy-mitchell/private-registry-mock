@@ -1,0 +1,79 @@
+{
+	"name": "private-registry-mock",
+	"version": "0.0.0",
+	"description": "Simple mocked server and package of an npm private registry.",
+	"keywords": [
+		"nodejs",
+		"npm",
+		"registry",
+		"mock",
+		"private",
+		"server",
+		"package",
+		"pkg",
+		"package.json",
+		"json",
+		"module",
+		"scope",
+		"scoped"
+	],
+	"license": "MIT",
+	"repository": "tommy-mitchell/private-registry-mock",
+	"author": {
+		"name": "Tommy Mitchell",
+		"url": "https://tommymitchell.io"
+	},
+	"type": "module",
+	"exports": {
+		"default": "./dist/index.js",
+		"types": "./dist/index.d.ts"
+	},
+	"files": [
+		"dist"
+	],
+	"engines": {
+		"node": "^18.18 || ^20.8 || ^21"
+	},
+	"scripts": {
+		"prepack": "npm run build",
+		"postinstall": "patch-package",
+		"build": "tsc -p tsconfig.build.json && tsup && dprint fmt",
+		"lint": "xo",
+		"format": "dprint fmt && xo --fix",
+		"test": "c8 ava -s && tsc --noEmit"
+	},
+	"ava": {
+		"extensions": {
+			"ts": "module"
+		},
+		"nodeArguments": [
+			"--import=tsimp"
+		]
+	},
+	"dependencies": {
+		"basic-auth": "^2.0.1",
+		"express-bearer-token": "^2.4.0",
+		"get-port": "^7.0.0",
+		"polka": "1.0.0-next.24",
+		"uint8array-extras": "^1.1.0"
+	},
+	"devDependencies": {
+		"@tommy-mitchell/dprint-config": "^0.1.0",
+		"@tommy-mitchell/eslint-config-xo": "^0.2.0",
+		"@tommy-mitchell/tsconfig": "^2.1.0",
+		"@types/basic-auth": "^1.1.8",
+		"@types/node": "^18.18",
+		"ava": "^6.1.1",
+		"c8": "^9.1.0",
+		"ky": "^1.2.0",
+		"package-json": "^9.0.0",
+		"patch-package": "^8.0.0",
+		"postinstall-postinstall": "^2.1.0",
+		"tsd": "^0.30.5",
+		"tsimp": "^2.0.11",
+		"tsup": "^8.0.2",
+		"type-fest": "^4.10.2",
+		"typescript": "~5.3.3",
+		"xo": "^0.57.0"
+	}
+}

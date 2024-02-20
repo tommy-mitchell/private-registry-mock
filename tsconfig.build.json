@@ -1,0 +1,9 @@
+{
+	"extends": "@tommy-mitchell/tsconfig",
+	"include": ["src"],
+	"compilerOptions": {
+		"outDir": "dist",
+		"declaration": false,
+		"removeComments": true
+	}
+}
