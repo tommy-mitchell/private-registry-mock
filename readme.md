@@ -35,7 +35,7 @@ const response = await ky.get("http://localhost:63142/@mockscope%2Ffoobar", {
 console.log(response);
 //=> { name: "@mockscope/foobar", ... }
 
-server.close();
+await server.close();
 ```
 
 Also exposes a health-check endpoint at `/` for testing connectivity:
@@ -50,7 +50,7 @@ const response = await ky.get("http://localhost:63142/").json();
 console.log(response);
 //=> { message: "Connected!" }
 
-server.close();
+await server.close();
 ```
 
 ## API
@@ -61,7 +61,7 @@ server.close();
 
 Returns a `Promise<object>` with the computed server [options](#options) and:
 
-- `close()` *(Function)* - Closes the server.
+- `close()`: - Gracefully closes the server. Returns a [`Promise<TerminationResponse>`](#terminationresponse).
 
 #### packageName
 
@@ -135,6 +135,34 @@ Type: `string`\
 Default: `"1.0.0"`
 
 The version of the mocked package.
+
+### TerminationResponse
+
+Internally, [`lil-http-terminator`](https://github.com/flash-oss/lil-http-terminator) is used to gracefully close the server.
+
+#### code
+
+Type: `"TIMED_OUT" | "SERVER_ERROR" | "TERMINATED" | "INTERNAL_ERROR"`
+
+Termination state.
+
+#### success
+
+Type: `boolean`
+
+Whether or not the server was successfully closed.
+
+#### message
+
+Type: `string`
+
+Termination or error message.
+
+#### error
+
+Type: `Error | undefined`
+
+If termination fails, the error that caused it.
 
 ## Related
 

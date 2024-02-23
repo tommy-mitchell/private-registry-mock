@@ -36,9 +36,10 @@
 	},
 	"scripts": {
 		"prepack": "npm run build",
-		"build": "tsc -p tsconfig.build.json && tsup && dprint fmt",
+		"build": "tsc -p tsconfig.build.json && tsup && dprint fmt 'dist/*'",
 		"lint": "xo",
 		"format": "dprint fmt && xo --fix",
+		"//test": "c8 ava -s && tsd test-d",
 		"test": "c8 ava -s && tsc --noEmit"
 	},
 	"ava": {
@@ -52,8 +53,9 @@
 	"dependencies": {
 		"basic-auth": "^2.0.1",
 		"get-port": "^7.0.0",
+		"lil-http-terminator": "^1.2.3",
 		"polka": "1.0.0-next.24",
-		"polka-bearer-token": "^0.1.1",
+		"polka-bearer-token": "^0.2.2",
 		"uint8array-extras": "^1.1.0"
 	},
 	"devDependencies": {
@@ -66,10 +68,10 @@
 		"c8": "^9.1.0",
 		"ky": "^1.2.0",
 		"package-json": "^9.0.0",
-		"tsd": "^0.30.5",
+		"tsd": "^0.30.6",
 		"tsimp": "^2.0.11",
 		"tsup": "^8.0.2",
-		"type-fest": "^4.10.2",
+		"type-fest": "^4.10.3",
 		"typescript": "~5.3.3",
 		"xo": "^0.57.0"
 	}

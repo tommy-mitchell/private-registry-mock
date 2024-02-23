@@ -7,7 +7,7 @@ export type Options = PartialDeep<ServerOptions>;
 
 /** Computed server options. */
 export type Response = ServerOptions & {
-	/** Closes the server. */
+	/** Gracefully closes the server. */
 	close: CloseFunction;
 };
 

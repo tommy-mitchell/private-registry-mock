@@ -1,9 +1,10 @@
 {
 	"extends": "@tommy-mitchell/tsconfig",
 	"exclude": ["node_modules", "coverage", "dist"],
-	"include": ["src", "test"],
+	"include": ["src", "test", "test-d"],
 	"compilerOptions": {
 		"noEmit": true,
 		"noUnusedLocals": false,
+		"skipLibCheck": false,
 	},
 }

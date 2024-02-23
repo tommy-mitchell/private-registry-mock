@@ -4,7 +4,7 @@ export const packageMock: Middleware = (_req, res) => {
 	const { hostname, port, package: { name: packageName, version: packageVersion } } = res.ctx;
 	const moduleName = packageName.split("/").at(-1)!;
 
-	const pkg = {
+	res.ok({
 		"_id": packageName,
 		"_rev": "1-c30105564f195a3038d3348840c9e080",
 		"name": packageName,
@@ -61,7 +61,5 @@ export const packageMock: Middleware = (_req, res) => {
 		"license": "MIT",
 		"readmeFilename": "README.md",
 		"_attachments": {},
-	};
-
-	res.ok(pkg);
+	});
 };

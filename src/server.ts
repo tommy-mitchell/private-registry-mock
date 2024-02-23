@@ -1,7 +1,20 @@
+import type { Server } from "node:http";
 import polka from "polka";
+import createHttpTerminator from "lil-http-terminator";
 import { responseHelpers } from "./middlewares/response-helpers.js";
 import { auth } from "./middlewares/auth.js";
 import { packageMock } from "./middlewares/package.js";
+
+export type TerminationResponse = {
+	/** Termination states. */
+	code: "TIMED_OUT" | "SERVER_ERROR" | "TERMINATED" | "INTERNAL_ERROR";
+	/** Whether or not the server was successfully closed. */
+	success: boolean;
+	/** Termination or error message. */
+	message: string;
+	/** If termination fails, the error that caused it. */
+	error?: Error;
+};
 
 /** Options for the server to use while mocking. */
 export type ServerOptions = {
@@ -64,7 +77,7 @@ export type ServerOptions = {
 	};
 };
 
-export type CloseFunction = () => void;
+export type CloseFunction = () => Promise<TerminationResponse>;
 
 const softEncode = (pkg: string) => encodeURIComponent(pkg).replace(/^%40/, "@");
 
@@ -83,7 +96,5 @@ export const configureServer = async (options: ServerOptions): Promise<CloseFunc
 		.use(packageRoute, auth, packageMock)
 		.listen(options.port, options.hostname);
 
-	return () => {
-		app.server.close();
-	};
+	return createHttpTerminator({ server: app.server as Server }).terminate;
 };

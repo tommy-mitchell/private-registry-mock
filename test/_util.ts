@@ -62,5 +62,7 @@ export const verify = test.macro<MacroArgs>(async (t, {
 	});
 
 	assertions.commit({ retainLogs: !assertions.passed });
-	server.close();
+
+	const { success } = await server.close();
+	t.true(success, "Server did not close successfully!");
 });
