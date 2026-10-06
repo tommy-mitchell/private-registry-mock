@@ -32,15 +32,14 @@
 		"dist"
 	],
 	"engines": {
-		"node": "^18.18 || ^20.8 || ^21"
+		"node": "^18.18 || ^20.8 || >=21"
 	},
 	"scripts": {
-		"prepack": "npm run build",
+		"prepare": "npm run build",
 		"build": "tsc -p tsconfig.build.json && tsup && dprint fmt 'dist/*'",
 		"lint": "xo",
 		"format": "dprint fmt && xo --fix",
-		"//test": "c8 ava -s && tsd test-d",
-		"test": "c8 ava -s && tsc --noEmit"
+		"test": "c8 ava --serial && tsd test-d"
 	},
 	"ava": {
 		"extensions": {
@@ -52,9 +51,9 @@
 	},
 	"dependencies": {
 		"basic-auth": "^2.0.1",
-		"get-port": "^7.0.0",
+		"get-port": "^7.1.0",
 		"lil-http-terminator": "^1.2.3",
-		"polka": "1.0.0-next.24",
+		"polka": "1.0.0-next.25",
 		"polka-bearer-token": "^0.2.2",
 		"uint8array-extras": "^1.1.0"
 	},
@@ -63,7 +62,7 @@
 		"@tommy-mitchell/eslint-config-xo": "^0.2.0",
 		"@tommy-mitchell/tsconfig": "^2.1.0",
 		"@types/basic-auth": "^1.1.8",
-		"@types/node": "^18.18",
+		"@types/node": "~18.18",
 		"ava": "^6.1.1",
 		"c8": "^9.1.0",
 		"ky": "^1.2.0",

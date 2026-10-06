@@ -48,7 +48,6 @@ export const packageMock: Middleware = (_req, res) => {
 				directories: {},
 			},
 		},
-		"readme": "Mock module!\n",
 		"maintainers": [{
 			name: "foobar",
 			email: "foobar@npmjs.org",
@@ -59,7 +58,6 @@ export const packageMock: Middleware = (_req, res) => {
 			[packageVersion]: "2024-02-20T01:38:44.202Z",
 		},
 		"license": "MIT",
-		"readmeFilename": "README.md",
 		"_attachments": {},
 	});
 };

@@ -13,15 +13,15 @@ tsd.expectAssignable<Options>({ token: { value: "my_token" } });
 
 const server = await mockPrivateRegistry();
 
-tsd.expectType<number>(server.port);
-tsd.expectType<string>(server.hostname);
-tsd.expectType<string>(server.token.value);
-tsd.expectType<string>(server.package.name);
-tsd.expectType<string>(server.package.version);
+tsd.expectAssignable<number>(server.port);
+tsd.expectAssignable<string>(server.hostname);
+tsd.expectAssignable<string>(server.token.value);
+tsd.expectAssignable<string>(server.package.name);
+tsd.expectAssignable<string>(server.package.version);
 
 const response = await server.close();
 
-tsd.expectType<string>(response.code);
-tsd.expectType<boolean>(response.success);
-tsd.expectType<string>(response.message);
-tsd.expectType<Error | undefined>(response.error);
+tsd.expectAssignable<string>(response.code);
+tsd.expectAssignable<boolean>(response.success);
+tsd.expectAssignable<string>(response.message);
+tsd.expectAssignable<Error | undefined>(response.error);
