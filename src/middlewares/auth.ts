@@ -1,26 +1,26 @@
+import { parse } from "basic-auth";
 import type { Middleware } from "polka";
-import { base64ToString } from "uint8array-extras";
 import bearerToken from "polka-bearer-token";
-import basicAuth from "basic-auth";
+import { base64ToString } from "uint8array-extras";
 
-export const auth: Middleware = async (req, res, next) => {
-	const { type: tokenType, value: token } = res.ctx.token;
+export const auth: Middleware = async (request, response, next) => {
+	const { type: tokenType, value: token } = response.ctx.token;
 
 	if (tokenType === "bearer") {
 		const bearerMiddleware = bearerToken();
-		await bearerMiddleware(req, res, () => {}); // eslint-disable-line @typescript-eslint/no-empty-function
+		await bearerMiddleware(request, response, () => {}); // eslint-disable-line @typescript-eslint/no-empty-function
 
-		if (req.token !== token) {
-			res.forbidden(`Invalid token - expected ${token}`);
+		if (request.token !== token) {
+			response.forbidden(`Invalid token - expected ${token}`);
 		}
 	} else {
 		const authToken = base64ToString(token);
-		const [username, password] = authToken.split(":");
+		const [username, password] = authToken.split(":", 2);
 
-		const authentication = basicAuth(req);
+		const authentication = parse(request.headers.authorization ?? "");
 
 		if (authentication?.name !== username || authentication?.pass !== password) {
-			res.forbidden(`Invalid credentials - expected ${authToken}`);
+			response.forbidden(`Invalid credentials - expected ${authToken}`);
 		}
 	}
 

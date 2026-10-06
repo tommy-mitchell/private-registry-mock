@@ -1,5 +1,5 @@
 import * as tsd from "tsd";
-import mockPrivateRegistry, { type Options, type Response } from "../src/index.js";
+import mockPrivateRegistry, { type Options, type Response } from "../src/index.ts";
 
 tsd.expectType<Response>(await mockPrivateRegistry());
 tsd.expectType<Response>(await mockPrivateRegistry("foobar"));

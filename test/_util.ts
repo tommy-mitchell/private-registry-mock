@@ -1,34 +1,34 @@
-import test from "ava"; // eslint-disable-line ava/no-ignored-test-files
+import test, { type Macro } from "ava"; // eslint-disable-line ava/no-ignored-test-files
 import ky, { type Options as KyOptions } from "ky";
 import type { FullMetadata } from "package-json";
 import type { PartialDeep, RequireOneOrNone as OneOrNoneOf } from "type-fest";
-import privateRegistryMock, { type Options } from "../src/index.js";
+import privateRegistryMock, { type Options } from "#src/index.ts";
 
-export const route = "@mockscope%2Ffoobar";
+export const DEFAULT_ROUTE = "@mockscope%2Ffoobar";
 
-export const auth = { headers: { authorization: "Bearer SecretToken" } };
+export const DEFAULT_AUTH = { headers: { authorization: "Bearer SecretToken" } };
 
 // dprint-ignore
-type MacroArgs = [{
-	request?: {
-		route?: string;
-		port?: number;
-		options?: KyOptions;
-	};
-} & OneOrNoneOf<{
-	packageName: string;
-	options: Options;
-}> & OneOrNoneOf<{
-	response: PartialDeep<FullMetadata> | { message?: string };
+type MacroArgs = [OneOrNoneOf<{
 	error: Partial<Response> & { message?: string };
-}>];
+	response: PartialDeep<FullMetadata> | { message?: string };
+}> & OneOrNoneOf<{
+	options: Options;
+	packageName: string;
+}> & {
+	request?: {
+		options?: KyOptions;
+		port?: number;
+		route?: string;
+	};
+}];
 
-export const verify = test.macro<MacroArgs>(async (t, {
-	packageName,
+export const verify: Macro<MacroArgs> = test.macro(async (t, {
+	error,
 	options,
+	packageName,
 	request = {},
 	response: expectations,
-	error,
 }) => {
 	const hostname = options?.hostname ?? "localhost";
 	const route = request.route ?? packageName ?? options?.package?.name ?? "";
@@ -46,12 +46,12 @@ export const verify = test.macro<MacroArgs>(async (t, {
 			tt.log({ error });
 
 			const message = await response.json<{ message: string; }>();
-			const { message: expectedMessage, ...expectations } = error;
+			const { message: expectedMessage, ...errorExpectations } = error;
 
-			tt.like(response, expectations);
+			tt.like(response, errorExpectations);
 
 			if (expectedMessage) {
-				tt.is(message.message, expectedMessage);
+				tt.is(message.message, expectedMessage); // eslint-disable-line ava/no-conditional-assertion
 			}
 		} else {
 			const data = await response.json();
