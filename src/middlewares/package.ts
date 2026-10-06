@@ -1,10 +1,11 @@
 import type { Middleware } from "polka";
 
-export const packageMock: Middleware = (_req, res) => {
-	const { hostname, port, package: { name: packageName, version: packageVersion } } = res.ctx;
+export const packageMock: Middleware = (_request, response) => {
+	const { hostname, package: { name: packageName, version: packageVersion }, port } = response.ctx;
 	const moduleName = packageName.split("/").at(-1)!;
 
-	res.ok({
+	/* eslint-disable perfectionist/sort-objects -- order from npm */
+	response.ok({
 		"_id": packageName,
 		"_rev": "1-c30105564f195a3038d3348840c9e080",
 		"name": packageName,
@@ -48,7 +49,6 @@ export const packageMock: Middleware = (_req, res) => {
 				directories: {},
 			},
 		},
-		"readme": "Mock module!\n",
 		"maintainers": [{
 			name: "foobar",
 			email: "foobar@npmjs.org",
@@ -59,7 +59,7 @@ export const packageMock: Middleware = (_req, res) => {
 			[packageVersion]: "2024-02-20T01:38:44.202Z",
 		},
 		"license": "MIT",
-		"readmeFilename": "README.md",
 		"_attachments": {},
 	});
+	/* eslint-enable perfectionist/sort-objects */
 };

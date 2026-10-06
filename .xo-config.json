@@ -1,8 +1,0 @@
-{
-	"extends": ["@tommy-mitchell/xo"],
-	"rules": {
-		"unicorn/numeric-separators-style": ["error", {
-			"number": { "minimumDigits": 6 }
-		}]
-	}
-}

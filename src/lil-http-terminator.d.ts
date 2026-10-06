@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/naming-convention, perfectionist/sort-object-types, perfectionist/sort-union-types -- declaration merging */
 
 declare module "lil-http-terminator" {
 	import type { Server } from "node:http";

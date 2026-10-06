@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
+/* eslint-disable @typescript-eslint/consistent-type-definitions, perfectionist/sort-interfaces -- declaration merging */
 import type * as http from "http"; // eslint-disable-line unicorn/prefer-node-protocol
 import type { ServerOptions } from "../server.ts";
-import type { ResponseMethod } from "./response-helpers.js";
+import type { ResponseMethod } from "./response-helpers.ts";
 
 type Context = ServerOptions;
 
