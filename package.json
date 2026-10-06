@@ -19,7 +19,7 @@
 	},
 	"scripts": {
 		"prepare": "npm run build",
-		"build": "echo TODO",
+		"build": "tsdown",
 		"lint": "dprint check && xo",
 		"format": "dprint fmt && xo --fix",
 		"test": "c8 ava && tsd test-d"
@@ -51,7 +51,7 @@
 		"uint8array-extras": "^1.6.0"
 	},
 	"devDependencies": {
-		"@tommy-mitchell/configs": "^0.1.0",
+		"@tommy-mitchell/configs": "^0.2.1",
 		"@types/basic-auth": "^1.1.8",
 		"@types/node": "^22",
 		"ava": "^8.0.1",
@@ -60,6 +60,7 @@
 		"ky": "^2.1.0",
 		"package-json": "^10.0.1",
 		"tsd": "^0.33.0",
+		"tsdown": "^0.23.0",
 		"type-fest": "^5.10.0",
 		"typescript": "~6.0.3",
 		"xo": "^5.0.1"

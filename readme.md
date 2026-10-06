@@ -15,6 +15,10 @@ npm install --save-dev private-registry-mock
 yarn add --dev private-registry-mock
 ```
 
+```sh
+pnpm add --save-dev private-registry-mock
+```
+
 </details>
 
 ## Usage
