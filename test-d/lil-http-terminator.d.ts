@@ -1,1 +1,1 @@
-src/lil-http-terminator.d.ts
+../src/lil-http-terminator.d.ts
