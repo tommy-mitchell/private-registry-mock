@@ -17,6 +17,8 @@ export type TerminationResponse = {
 };
 
 export type Package = {
+	[index: string]: unknown;
+
 	/**
 	 * The name of the mocked package. Determines the route of the server this package is on.
 	 *

@@ -2,7 +2,7 @@ import type { Package, ServerOptions } from "../server.ts";
 
 type MockPackageContext = Package & Pick<ServerOptions, "hostname" | "port">;
 
-export const mockPackage = ({ hostname, name, port, version }: MockPackageContext) => {
+export const mockPackage = ({ hostname, name, port, version, ...mocks }: MockPackageContext) => {
 	const moduleName = name.split("/").at(-1)!;
 
 	/* eslint-disable perfectionist/sort-objects -- order from npm */
@@ -61,6 +61,7 @@ export const mockPackage = ({ hostname, name, port, version }: MockPackageContex
 		},
 		"license": "MIT",
 		"_attachments": {},
+		...mocks,
 	} as const;
 	/* eslint-enable perfectionist/sort-objects */
 };

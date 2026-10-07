@@ -5,7 +5,7 @@ tsd.expectType<Response>(await mockPrivateRegistry());
 tsd.expectType<Response>(await mockPrivateRegistry(["foobar"]));
 tsd.expectType<Response>(await mockPrivateRegistry([{ name: "foobar" }]));
 tsd.expectType<Response>(await mockPrivateRegistry({}));
-tsd.expectType<Response>(await mockPrivateRegistry({ packages: [{ name: "foobar" }] }));
+tsd.expectType<Response>(await mockPrivateRegistry({ packages: [{ repository: "org/repo" }] }));
 
 tsd.expectAssignable<Options>({});
 tsd.expectAssignable<Options>({ port: 8080 });

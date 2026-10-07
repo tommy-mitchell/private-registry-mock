@@ -17,6 +17,26 @@ test("custom name", verify, {
 	responses: [{ name: "foobar" }],
 });
 
+test("passes through custom mocks", verify, {
+	options: {
+		packages: [{
+			name: "foobar",
+			repository: {
+				type: "git",
+				url: "https://github.com/org/repo",
+			},
+		}],
+	},
+	requests: [{ options: DEFAULT_AUTH, route: "/foobar" }],
+	responses: [{
+		name: "foobar",
+		repository: {
+			type: "git",
+			url: "https://github.com/org/repo",
+		},
+	}],
+});
+
 test("multiple", verify, {
 	packageNames: ["foobar", "@mockscope/foobar"],
 	requests: [

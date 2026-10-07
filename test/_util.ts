@@ -48,7 +48,7 @@ export const verify: Macro<MacroArgs> = test.macro(async (t, {
 
 		const assertions = await t.try(async tt => {
 			if (shouldFail(expected)) {
-				tt.log({ expected });
+				tt.log("expected:", expected);
 
 				const { message } = await response.json<{ message: string; }>();
 				const { message: expectedMessage, ...expectedResponse } = expected;
@@ -61,7 +61,7 @@ export const verify: Macro<MacroArgs> = test.macro(async (t, {
 			} else {
 				const data = await response.json();
 
-				tt.log(data);
+				tt.log("data:", data);
 				tt.like(data, expected ?? { message: "Connected!" });
 			}
 		});
