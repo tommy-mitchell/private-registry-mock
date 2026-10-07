@@ -147,7 +147,7 @@ Default: `"1.0.0"`
 
 The version of the mocked package.
 
-###### [index: string]
+###### \[index: string\]
 
 Type: `unknown`
 
