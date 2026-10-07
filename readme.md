@@ -73,7 +73,7 @@ Type: `Array<string | object>`
 
 The names of the mocked packages, or mocked packages themselves. Determines the routes of the server the packages are on. Arbitrary data is passed through to the mocked package.
 
-Names are soft encoded, preserving `@`s but escaping all other special characters via [`encodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) (i.e. `/` becomes `%2F`).
+Route names are soft encoded, preserving `@`s but escaping all other special characters via [`encodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) (i.e. `/` becomes `%2F`).
 
 ```ts
 import mockPrivateRegistry from "private-registry-mock";
@@ -138,7 +138,7 @@ Default: `"@mockscope/foobar"`
 
 The name of the mocked package. Determines the route of the server this package is on.
 
-Names are soft encoded, preserving `@`s but escaping all other special characters via [`encodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) (i.e. `/` becomes `%2F`).
+Route names are soft encoded, preserving `@`s but escaping all other special characters via [`encodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) (i.e. `/` becomes `%2F`).
 
 ###### version
 

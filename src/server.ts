@@ -22,7 +22,7 @@ export type Package = {
 	/**
 	 * The name of the mocked package. Determines the route of the server this package is on.
 	 *
-	 * Names are soft encoded, preserving `@`s but escaping all other special characters via {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent `encodeURIComponent`} (i.e. `/` becomes `%2F`).
+	 * Route names are soft encoded, preserving `@`s but escaping all other special characters via {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent `encodeURIComponent`} (i.e. `/` becomes `%2F`).
 	 *
 	 * @default "@mockscope/foobar"
 	 */
