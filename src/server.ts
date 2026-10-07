@@ -103,7 +103,8 @@ export const configureServer = async (options: ServerOptions): Promise<CloseFunc
 				return;
 			}
 
-			response.ok(mockPackage({ ...pkg, ...options }));
+			const { hostname, port } = options;
+			response.ok(mockPackage({ ...pkg, hostname, port }));
 		})
 		.listen(options.port, options.hostname);
 
