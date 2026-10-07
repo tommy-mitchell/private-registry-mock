@@ -15,10 +15,16 @@ const shouldFail = (expected?: ErrorResponse | OkResponse): expected is ErrorRes
 	(expected as ErrorResponse)?.status !== undefined
 );
 
+type Package = NonNullable<Options["packages"]>[number];
+
+const getPackageName = (pkg?: Package | string): string => (
+	typeof pkg === "string" ? pkg : pkg?.name ?? ""
+);
+
 // dprint-ignore
 type MacroArgs = [ OneOrNoneOf<{
 	options: Options;
-	packageNames: string[];
+	packages: Array<Package | string>;
 }> & {
 	requests?: Array<{
 		options?: KyOptions;
@@ -30,14 +36,14 @@ type MacroArgs = [ OneOrNoneOf<{
 
 export const verify: Macro<MacroArgs> = test.macro(async (t, {
 	options,
-	packageNames,
+	packages,
 	requests = [{}],
 	responses,
 }) => {
-	const server = await privateRegistryMock(packageNames ?? options as string[]);
+	const server = await privateRegistryMock(packages ?? options as string[]);
 
 	await Promise.all(requests.map(async (request, index) => {
-		const route = request.route ?? `/${packageNames?.[index] ?? options?.packages?.[index]?.name ?? ""}`;
+		const route = request.route ?? `/${getPackageName((packages ?? options?.packages)?.[index])}`;
 		const expected = responses?.[index];
 
 		const hostname = options?.hostname ?? "localhost";

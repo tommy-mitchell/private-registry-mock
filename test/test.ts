@@ -12,7 +12,7 @@ test("main", verify, {
 });
 
 test("custom name", verify, {
-	packageNames: ["foobar"],
+	packages: ["foobar"],
 	requests: [{ options: DEFAULT_AUTH }],
 	responses: [{ name: "foobar" }],
 });
@@ -38,13 +38,21 @@ test("passes through custom mocks", verify, {
 });
 
 test("multiple", verify, {
-	packageNames: ["foobar", "@mockscope/foobar"],
+	packages: ["foobar", { version: "2.3.4" }],
 	requests: [
 		{ options: DEFAULT_AUTH },
 		{ options: DEFAULT_AUTH, route: DEFAULT_ROUTE },
 	],
 	responses: [
 		{ name: "foobar" },
-		{ name: "@mockscope/foobar" },
+		{
+			name: "@mockscope/foobar",
+			versions: { "2.3.4": { name: "@mockscope/foobar" } },
+		},
 	],
+});
+
+test("returns 404 for unknown route", verify, {
+	requests: [{ options: DEFAULT_AUTH, route: "/unknown" }],
+	responses: [{ message: "Package \"unknown\" not found", status: 404 }],
 });
