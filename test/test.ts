@@ -18,23 +18,9 @@ test("custom name", verify, {
 });
 
 test("passes through custom mocks", verify, {
-	options: {
-		packages: [{
-			name: "foobar",
-			repository: {
-				type: "git",
-				url: "https://github.com/org/repo",
-			},
-		}],
-	},
+	options: { packages: [{ name: "foobar", sideEffects: true }] },
 	requests: [{ options: DEFAULT_AUTH, route: "/foobar" }],
-	responses: [{
-		name: "foobar",
-		repository: {
-			type: "git",
-			url: "https://github.com/org/repo",
-		},
-	}],
+	responses: [{ name: "foobar", sideEffects: true }],
 });
 
 test("multiple", verify, {

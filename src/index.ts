@@ -13,7 +13,31 @@ export type Response = ServerOptions & {
 
 type PackageInput = Partial<Package> | string;
 
-/** Starts a server and exposes an endpoint for the given package name, returning a JSON object with a mock of the {@link https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md package's metadata} from the npm registry. */
+/**
+ * Starts a server and exposes an endpoint for the given package(s),
+ * returning a JSON object with a mock of the {@link https://github.com/npm/registry/blob/main/docs/responses/package-metadata.md packages' metadata} from the npm registry.
+ *
+ * @example
+ * ```ts
+ * import mockPrivateRegistry from "private-registry-mock";
+ * import ky from "ky";
+ *
+ * const server = await mockPrivateRegistry([
+ * 	"@org/name",
+ * 	{ version: "2.3.4", sideEffects: true },
+ * ]);
+ *
+ * const auth = { headers: { authorization: "Bearer SecretToken" } };
+ *
+ * await ky.get("http://localhost:63142/@org%2Fname", auth).json();
+ * //=> { name: "@org/name", version: "1.0.0", … }
+ *
+ * await ky.get("http://localhost:63142/@mockscope%2Ffoobar", auth).json();
+ * //=> { name: "@mockscope/foobar", version: "2.3.4", sideEffects: true, … }
+ *
+ * await server.close();
+ * ```
+ */
 export default async function mockPrivateRegistry(options?: Options): Promise<Response>;
 export default async function mockPrivateRegistry(packages: PackageInput[]): Promise<Response>;
 export default async function mockPrivateRegistry(packagesOrOptions?: Options | PackageInput[]): Promise<Response> {

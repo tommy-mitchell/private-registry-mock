@@ -23,7 +23,7 @@ pnpm add --save-dev private-registry-mock
 
 ## Usage
 
-This package exports a function that starts a server and exposes an endpoint for the given package name, returning a JSON object with a mock of the [package's metadata](https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md) from the npm registry.
+This package exports a function that starts a server and exposes an endpoint for the given package(s), returning a JSON object with a mock of the [packages' metadata](https://github.com/npm/registry/blob/main/docs/responses/package-metadata.md) from the npm registry.
 
 The default route is shown below:
 
@@ -37,7 +37,7 @@ const response = await ky.get("http://localhost:63142/@mockscope%2Ffoobar", {
 }).json();
 
 console.log(response);
-//=> { name: "@mockscope/foobar", ... }
+//=> { name: "@mockscope/foobar", … }
 
 await server.close();
 ```
@@ -59,7 +59,7 @@ await server.close();
 
 ## API
 
-### mockPrivateRegistry(packageName)
+### mockPrivateRegistry(packages?)
 
 ### mockPrivateRegistry(options?)
 
@@ -67,14 +67,21 @@ Returns a `Promise<object>` with the computed server [options](#options) and:
 
 - `close()`: - Gracefully closes the server. Returns a [`Promise<TerminationResponse>`](#terminationresponse).
 
-#### packageName
+#### packages
 
-Type: `string`\
-Default: `"@mockscope/foobar"`
+Type: `Array<string | object>`
 
-The name of the mocked package. Determines the route of the server.
+The names of the mocked packages, or mocked packages themselves. Determines the routes of the server the packages are on. Arbitrary data is passed through to the mocked package.
 
 Names are soft encoded, preserving `@`s but escaping all other special characters via [`encodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) (i.e. `/` becomes `%2F`).
+
+```ts
+import mockPrivateRegistry from "private-registry-mock";
+
+const server = await mockPrivateRegistry(["@org/name", { version: "2.3.4", sideEffects: true }]);
+//=> { name: "@org/name", version: "1.0.0", … }
+//=> { name: "@mockscope/foobar", version: "2.3.4", sideEffects: true, … }
+```
 
 #### options
 
@@ -117,21 +124,21 @@ Default: `"SecretToken"`
 
 The token to use for authentication.
 
-##### package
+##### packages
 
-Type: `object`\
-Default: `{ name: "@mockscope/foobar", version: "1.0.0" }`
+Type: `object[]`\
+Default: `[{ name: "@mockscope/foobar", version: "1.0.0" }]`
 
-Information about the mocked package. Determines the route of the server.
-
-Names are soft encoded, preserving `@`s but escaping all other special characters via [`encodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) (i.e. `/` becomes `%2F`).
+Information about the mocked packages. Determines the routes of the server the packages are on.
 
 ###### name
 
 Type: `string`\
 Default: `"@mockscope/foobar"`
 
-The name of the mocked package. Determines the route of the server.
+The name of the mocked package. Determines the route of the server this package is on.
+
+Names are soft encoded, preserving `@`s but escaping all other special characters via [`encodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) (i.e. `/` becomes `%2F`).
 
 ###### version
 
@@ -139,6 +146,12 @@ Type: `string`\
 Default: `"1.0.0"`
 
 The version of the mocked package.
+
+###### [index: string]
+
+Type: `unknown`
+
+Additional arbitrary data for the mocked package.
 
 ### TerminationResponse
 

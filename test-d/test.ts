@@ -2,10 +2,11 @@ import * as tsd from "tsd";
 import mockPrivateRegistry, { type Options, type Response } from "../src/index.ts";
 
 tsd.expectType<Response>(await mockPrivateRegistry());
+tsd.expectType<Response>(await mockPrivateRegistry([]));
 tsd.expectType<Response>(await mockPrivateRegistry(["foobar"]));
 tsd.expectType<Response>(await mockPrivateRegistry([{ name: "foobar" }]));
 tsd.expectType<Response>(await mockPrivateRegistry({}));
-tsd.expectType<Response>(await mockPrivateRegistry({ packages: [{ repository: "org/repo" }] }));
+tsd.expectType<Response>(await mockPrivateRegistry({ packages: [{ sideEffects: true }] }));
 
 tsd.expectAssignable<Options>({});
 tsd.expectAssignable<Options>({ port: 8080 });
