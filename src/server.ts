@@ -1,8 +1,8 @@
 import type { Server } from "node:http";
 import createHttpTerminator from "lil-http-terminator";
 import polka from "polka";
+import { mockPackage } from "./helpers/package.ts";
 import { auth } from "./middlewares/auth.ts";
-import { packageMock } from "./middlewares/package.ts";
 import { responseHelpers } from "./middlewares/response-helpers.ts";
 
 export type TerminationResponse = {
@@ -16,6 +16,26 @@ export type TerminationResponse = {
 	success: boolean;
 };
 
+export type Package = {
+	[index: string]: unknown;
+
+	/**
+	 * The name of the mocked package. Determines the route of the server this package is on.
+	 *
+	 * Route names are soft encoded, preserving `@`s but escaping all other special characters via {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent `encodeURIComponent`} (i.e. `/` becomes `%2F`).
+	 *
+	 * @default "@mockscope/foobar"
+	 */
+	name: string;
+
+	/**
+	 * The version of the mocked package.
+	 *
+	 * @default "1.0.0"
+	 */
+	version: string;
+};
+
 /** Options for the server to use while mocking. */
 export type ServerOptions = {
 	/**
@@ -26,27 +46,11 @@ export type ServerOptions = {
 	hostname: string;
 
 	/**
-	 * Information about the mocked package. Determines the route of the server.
+	 * Information about the mocked packages. Determines the routes of the server the packages are on.
 	 *
-	 * @default { name: "@mockscope/foobar", version: "1.0.0" }
+	 * @default [{ name: "@mockscope/foobar", version: "1.0.0" }]
 	 */
-	package: {
-		/**
-		 * The name of the mocked package. Determines the route of the server.
-		 *
-		 * Names are soft encoded, preserving `@`s but escaping all other special characters via {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent `encodeURIComponent`} (i.e. `/` becomes `%2F`).
-		 *
-		 * @default "@mockscope/foobar"
-		 */
-		name: string;
-
-		/**
-		 * The version of the mocked package.
-		 *
-		 * @default "1.0.0"
-		 */
-		version: string;
-	};
+	packages: Package[];
 
 	/**
 	 * The port to listen on. If not provided, attempts to use a set of default ports, and falls back to a random port if unavailable.
@@ -79,11 +83,7 @@ export type ServerOptions = {
 
 export type CloseFunction = () => Promise<TerminationResponse>;
 
-const softEncode = (pkg: string) => encodeURIComponent(pkg).replace(/^%40/v, "@");
-
 export const configureServer = async (options: ServerOptions): Promise<CloseFunction> => {
-	const packageRoute = `/${softEncode(options.package.name)}`;
-
 	const app = polka()
 		.use(responseHelpers)
 		.use((_request, response, next) => {
@@ -93,7 +93,19 @@ export const configureServer = async (options: ServerOptions): Promise<CloseFunc
 		.get("/", (_request, response) => {
 			response.ok("Connected!");
 		})
-		.use(packageRoute, auth, packageMock)
+		.use(auth)
+		.get("/:package", (request, response) => {
+			const { package: packageName } = request.params;
+			const pkg = options.packages.find(({ name }) => name === packageName);
+
+			if (!pkg) {
+				response.notFound(`Package "${packageName}" not found`);
+				return;
+			}
+
+			const { hostname, port } = options;
+			response.ok(mockPackage({ ...pkg, hostname, port }));
+		})
 		.listen(options.port, options.hostname);
 
 	return createHttpTerminator({ server: app.server as Server }).terminate;

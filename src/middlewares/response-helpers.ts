@@ -19,6 +19,11 @@ const ok: ResponseHelper = (response) => (data = {}) => {
 	response.end(serialize(response, data));
 };
 
+const notFound: ResponseHelper = (response) => (data = {}) => {
+	response.statusCode = 404;
+	response.end(serialize(response, data));
+};
+
 const forbidden: ResponseHelper = (response) => (data = {}) => {
 	response.statusCode = 403;
 	response.end(serialize(response, data));
@@ -27,6 +32,7 @@ const forbidden: ResponseHelper = (response) => (data = {}) => {
 /** Creates JSON response helpers. Based on https://github.com/unix/koa-custom-response. */
 export const responseHelpers: Middleware = (_request, response, next) => {
 	response.ok = ok(response);
+	response.notFound = notFound(response);
 	response.forbidden = forbidden(response);
 
 	void next();
