@@ -1,9 +1,9 @@
 import getPort from "get-port";
 import type { PartialDeep } from "type-fest";
-import { type CloseFunction, configureServer, type ServerOptions } from "./server.ts";
+import { type CloseFunction, configureServer, type Package, type ServerOptions } from "./server.ts";
 
 /** Options for the server to use while mocking. */
-export type Options = PartialDeep<ServerOptions>;
+export type Options = PartialDeep<ServerOptions, { recurseIntoArrays: true; }>;
 
 /** Computed server options. */
 export type Response = ServerOptions & {
@@ -11,26 +11,34 @@ export type Response = ServerOptions & {
 	close: CloseFunction;
 };
 
+type PackageInput = Partial<Package> | string;
+
 /** Starts a server and exposes an endpoint for the given package name, returning a JSON object with a mock of the {@link https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md package's metadata} from the npm registry. */
 export default async function mockPrivateRegistry(options?: Options): Promise<Response>;
-export default async function mockPrivateRegistry(packageName: string): Promise<Response>;
-export default async function mockPrivateRegistry(packageOrOptions?: Options | string): Promise<Response> {
-	if (typeof packageOrOptions === "string") {
-		packageOrOptions = {
-			package: { name: packageOrOptions, version: "1.0.0" },
+export default async function mockPrivateRegistry(packages: PackageInput[]): Promise<Response>;
+export default async function mockPrivateRegistry(packagesOrOptions?: Options | PackageInput[]): Promise<Response> {
+	if (Array.isArray(packagesOrOptions)) {
+		packagesOrOptions = {
+			packages: packagesOrOptions.map(pkg => (
+				typeof pkg === "string" ? { name: pkg, version: "1.0.0" } : pkg
+			)),
 		};
 	}
 
 	const options: ServerOptions = {
-		hostname: packageOrOptions?.hostname ?? "localhost",
-		package: {
-			name: packageOrOptions?.package?.name ?? "@mockscope/foobar",
-			version: packageOrOptions?.package?.version ?? "1.0.0",
-		},
-		port: packageOrOptions?.port ?? await getPort({ port: [63142, 63143, 63144] }),
+		hostname: packagesOrOptions?.hostname ?? "localhost",
+		packages: packagesOrOptions?.packages?.map(pkg => ({
+			...pkg,
+			name: pkg.name ?? "@mockscope/foobar",
+			version: pkg.version ?? "1.0.0",
+		})) ?? [{
+			name: "@mockscope/foobar",
+			version: "1.0.0",
+		}],
+		port: packagesOrOptions?.port ?? await getPort({ port: [63142, 63143, 63144] }),
 		token: {
-			type: packageOrOptions?.token?.type ?? "bearer",
-			value: packageOrOptions?.token?.value ?? "SecretToken",
+			type: packagesOrOptions?.token?.type ?? "bearer",
+			value: packagesOrOptions?.token?.value ?? "SecretToken",
 		},
 	};
 

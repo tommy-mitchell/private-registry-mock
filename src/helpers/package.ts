@@ -1,27 +1,28 @@
-import type { Middleware } from "polka";
+import type { Package, ServerOptions } from "../server.ts";
 
-export const packageMock: Middleware = (_request, response) => {
-	const { hostname, package: { name: packageName, version: packageVersion }, port } = response.ctx;
-	const moduleName = packageName.split("/").at(-1)!;
+type MockPackageContext = Package & Pick<ServerOptions, "hostname" | "port">;
+
+export const mockPackage = ({ hostname, name, port, version }: MockPackageContext) => {
+	const moduleName = name.split("/").at(-1)!;
 
 	/* eslint-disable perfectionist/sort-objects -- order from npm */
-	response.ok({
-		"_id": packageName,
+	return {
+		"_id": name,
 		"_rev": "1-c30105564f195a3038d3348840c9e080",
-		"name": packageName,
+		"name": name,
 		"description": "Fake module",
 		"dist-tags": {
-			latest: packageVersion,
+			latest: version,
 		},
 		"versions": {
-			[packageVersion]: {
-				name: packageName,
-				version: packageVersion,
+			[version]: {
+				name: name,
+				version: version,
 				description: "Fake module",
 				main: "index.js",
 				license: "MIT",
 				gitHead: "2666d6874aaebbaf7188e14d94eb8488079d6c2c",
-				_id: `${packageName}@${packageVersion}`,
+				_id: `${name}@${version}`,
 				_shasum: "19d13344e0b701cae3374fa6f03d2d3f90847c1c",
 				_from: ".",
 				_npmVersion: "10.2.3",
@@ -37,7 +38,7 @@ export const packageMock: Middleware = (_request, response) => {
 				dist: {
 					integrity: "sha512-Q2bFTOhEALkN8hOms2FKTDLy7eugP2zFZ1T8LCvX42Fp3WoNr3bjZSAHeOsHrbV1Fu9/A0EzCinRE7Af1ofPrw==",
 					shasum: "cd2e97011c99721c5f0a6d677c50a144ec790a2d",
-					tarball: `http://${hostname}:${port}/${packageName}/-/${moduleName}-${packageVersion}.tgz`,
+					tarball: `http://${hostname}:${port}/${name}/-/${moduleName}-${version}.tgz`,
 					fileCount: 1,
 					unpackedSize: 0xDEADBEEF, // eslint-disable-line unicorn/numeric-separators-style
 					// dprint-ignore
@@ -56,10 +57,10 @@ export const packageMock: Middleware = (_request, response) => {
 		"time": {
 			modified: "2024-02-20T01:38:44.202Z",
 			created: "2024-02-20T01:38:44.202Z",
-			[packageVersion]: "2024-02-20T01:38:44.202Z",
+			[version]: "2024-02-20T01:38:44.202Z",
 		},
 		"license": "MIT",
 		"_attachments": {},
-	});
+	} as const;
 	/* eslint-enable perfectionist/sort-objects */
 };

@@ -5,15 +5,15 @@ import { DEFAULT_ROUTE, verify } from "./_util.ts";
 const basicAuthToken = stringToBase64("Open:Sesame");
 
 test("bearer auth", verify, {
-	request: {
+	requests: [{
 		options: {
 			headers: {
 				authorization: "Bearer SecretToken",
 			},
 		},
 		route: DEFAULT_ROUTE,
-	},
-	response: { name: "@mockscope/foobar" },
+	}],
+	responses: [{ name: "@mockscope/foobar" }],
 });
 
 test("bearer auth - custom token", verify, {
@@ -22,20 +22,20 @@ test("bearer auth - custom token", verify, {
 			value: "CustomToken",
 		},
 	},
-	request: {
+	requests: [{
 		options: {
 			headers: {
 				authorization: "Bearer CustomToken",
 			},
 		},
 		route: DEFAULT_ROUTE,
-	},
-	response: { name: "@mockscope/foobar" },
+	}],
+	responses: [{ name: "@mockscope/foobar" }],
 });
 
 test("bearer auth - errors without a token", verify, {
-	error: { message: "Invalid token - expected SecretToken", status: 403 },
-	request: { route: DEFAULT_ROUTE },
+	requests: [{ route: DEFAULT_ROUTE }],
+	responses: [{ message: "Invalid token - expected SecretToken", status: 403 }],
 });
 
 test("basic auth", verify, {
@@ -45,24 +45,24 @@ test("basic auth", verify, {
 			value: basicAuthToken,
 		},
 	},
-	request: {
+	requests: [{
 		options: {
 			headers: {
 				authorization: `Basic ${basicAuthToken}`,
 			},
 		},
 		route: DEFAULT_ROUTE,
-	},
-	response: { name: "@mockscope/foobar" },
+	}],
+	responses: [{ name: "@mockscope/foobar" }],
 });
 
 test("basic auth - errors without a token", verify, {
-	error: { message: "Invalid credentials - expected Open:Sesame", status: 403 },
 	options: {
 		token: {
 			type: "basic",
 			value: basicAuthToken,
 		},
 	},
-	request: { route: DEFAULT_ROUTE },
+	requests: [{ route: DEFAULT_ROUTE }],
+	responses: [{ message: "Invalid credentials - expected Open:Sesame", status: 403 }],
 });

@@ -11,6 +11,5 @@
 		"rewriteRelativeImportExtensions": true,
 		"erasableSyntaxOnly": true,
 		"verbatimModuleSyntax": true,
-		"isolatedDeclarations": true,
 	},
 }

@@ -1,2 +1,2 @@
-import "../src/lil-http-terminator.d.ts";
-import "../src/middlewares/context.d.ts";
+import "../src/types/lil-http-terminator.d.ts";
+import "../src/types/http.d.ts";
