@@ -16,8 +16,8 @@ export const mockPackage = ({ hostname, name, port, version, ...mocks }: MockPac
 		},
 		"versions": {
 			[version]: {
-				name: name,
-				version: version,
+				name,
+				version,
 				description: "Fake module",
 				main: "index.js",
 				license: "MIT",
