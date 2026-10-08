@@ -1,7 +1,9 @@
 import { parse } from "basic-auth";
 import type { Middleware } from "polka";
 import bearerToken from "polka-bearer-token";
-import { base64ToString } from "uint8array-extras";
+
+const DECODER = new TextDecoder("utf-8");
+const base64ToString = (input: string): string => DECODER.decode(Uint8Array.fromBase64(input));
 
 export const auth: Middleware = async (request, response, next) => {
 	const { type: tokenType, value: token } = response.ctx.token;

@@ -1,8 +1,7 @@
 import test from "ava";
-import { stringToBase64 } from "uint8array-extras";
 import { DEFAULT_ROUTE, verify } from "./_util.ts";
 
-const basicAuthToken = stringToBase64("Open:Sesame");
+const basicAuthToken = new TextEncoder().encode("Open:Sesame").toBase64();
 
 test("bearer auth", verify, {
 	requests: [{
