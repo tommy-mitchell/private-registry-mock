@@ -66,6 +66,6 @@ export default async function mockPrivateRegistry(packagesOrOptions?: Options | 
 		},
 	};
 
-	const close = await configureServer(options);
+	const close = configureServer(options);
 	return { ...options, close };
 }

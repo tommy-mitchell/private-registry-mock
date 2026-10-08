@@ -83,7 +83,7 @@ export type ServerOptions = {
 
 export type CloseFunction = () => Promise<TerminationResponse>;
 
-export const configureServer = async (options: ServerOptions): Promise<CloseFunction> => {
+export const configureServer = (options: ServerOptions): CloseFunction => {
 	const app = polka()
 		.use(responseHelpers)
 		.use((_request, response, next) => {
