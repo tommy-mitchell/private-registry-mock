@@ -1,7 +1,8 @@
+import { Buffer } from "node:buffer";
 import test from "ava";
 import { DEFAULT_ROUTE, verify } from "./_util.ts";
 
-const basicAuthToken = new TextEncoder().encode("Open:Sesame").toBase64();
+const basicAuthToken = Buffer.from("Open:Sesame").toString("base64");
 
 test("bearer auth", verify, {
 	requests: [{
