@@ -8,7 +8,7 @@ export const auth: Middleware = async (request, response, next) => {
 
 	if (tokenType === "bearer") {
 		const bearerMiddleware = bearerToken();
-		await bearerMiddleware(request, response, () => {}); // eslint-disable-line @typescript-eslint/no-empty-function
+		await bearerMiddleware(request, response, () => {/* empty */});
 
 		if (request.token !== token) {
 			response.forbidden(`Invalid token - expected ${token}`);

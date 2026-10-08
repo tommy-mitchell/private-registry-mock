@@ -2,8 +2,8 @@ import type { Server } from "node:http";
 import createHttpTerminator from "lil-http-terminator";
 import polka from "polka";
 import { mockPackage } from "./helpers/package.ts";
+import { responseHelpers } from "./helpers/response.ts";
 import { auth } from "./middlewares/auth.ts";
-import { responseHelpers } from "./middlewares/response-helpers.ts";
 
 export type TerminationResponse = {
 	/** Termination states. */

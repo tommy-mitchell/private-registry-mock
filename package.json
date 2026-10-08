@@ -47,7 +47,7 @@
 		"get-port": "^7.2.0",
 		"lil-http-terminator": "^1.2.3",
 		"polka": "^1.0.0-next.28",
-		"polka-bearer-token": "^0.2.4",
+		"polka-bearer-token": "^1.0.0",
 		"uint8array-extras": "^1.6.0"
 	},
 	"devDependencies": {
@@ -56,7 +56,7 @@
 		"@types/node": "^22",
 		"ava": "^8.0.1",
 		"c8": "^12.0.0",
-		"dprint": "^0.60.1",
+		"dprint": "^0.61.1",
 		"ky": "^2.1.0",
 		"package-json": "^10.0.1",
 		"tsd": "^0.33.0",
